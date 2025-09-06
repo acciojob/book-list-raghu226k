@@ -1,16 +1,123 @@
 <!DOCTYPE html>
 
-<html>
-
+<html lang="en">
 <head>
-	<link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <title>MyBookList</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    input {
+      margin: 5px;
+      padding: 8px;
+      width: 200px;
+    }
+    button {
+      padding: 8px 12px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 30px;
+    }
+    .table-striped tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+    }
+    .delete {
+      background-color: red;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+  </style>
 </head>
-
 <body>
-	<!-- the entire body must be written by student -->
-    <script type="text/javascript" src="./script.js">
-</script>
+
+  <h1>MyBookList</h1>
+
+  <!-- Form Section -->
+  <div class="form-group">
+    <input type="text" id="title" placeholder="Book Title" required>
+    <input type="text" id="author" placeholder="Author" required>
+    <input type="text" id="isbn" placeholder="ISBN#" required>
+    <button id="submit">Submit</button>
+  </div>
+
+  <!-- Table Section -->
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>ISBN#</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="book-list">
+      <!-- Dynamically added rows will appear here -->
+    </tbody>
+  </table>
+
+  <script>
+    // Get form elements
+    const titleInput = document.getElementById('title');
+    const authorInput = document.getElementById('author');
+    const isbnInput = document.getElementById('isbn');
+    const submitBtn = document.getElementById('submit');
+    const bookList = document.getElementById('book-list');
+
+    // Submit button click handler
+    submitBtn.addEventListener('click', function(event) {
+      event.preventDefault();
+
+      const title = titleInput.value.trim();
+      const author = authorInput.value.trim();
+      const isbn = isbnInput.value.trim();
+
+      // Basic validation
+      if (title === '' || author === '' || isbn === '') {
+        alert('Please fill in all fields');
+        return;
+      }
+
+      // Create table row
+      const row = document.createElement('tr');
+
+      row.innerHTML = `
+        <td>${title}</td>
+        <td>${author}</td>
+        <td>${isbn}</td>
+        <td><button class="delete">Clear</button></td>
+      `;
+
+      // Append to table
+      bookList.appendChild(row);
+
+      // Clear input fields
+      titleInput.value = '';
+      authorInput.value = '';
+      isbnInput.value = '';
+    });
+
+    // Event delegation for delete buttons
+    bookList.addEventListener('click', function(event) {
+      if (event.target.classList.contains('delete')) {
+        const row = event.target.closest('tr');
+        row.remove();
+      }
+    });
+  </script>
 
 </body>
-
 </html>
